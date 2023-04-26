@@ -5,6 +5,8 @@
 #include <cmath>
 #include <random>
 #include <chrono>
+#include <cctype>
+#include <algorithm>
 
 typedef std::size_t HASH_INDEX_T;
 
@@ -20,7 +22,31 @@ struct MyStringHash {
     HASH_INDEX_T operator()(const std::string& k) const
     {
         // Add your code here
+        //HASH_INDEX_T wValues[5] = {0,0,0,0,0};
+        int idx = k.size();
+				HASH_INDEX_T total = 0;
+        for(int i = 4; i>=0; i--)
+        {
+						idx = idx-6;
+						int len = 6;
+						if(idx < 0) 
+						{
+							len += idx;
+							idx = 0;
+						}
 
+						std::string curStr = k.substr(idx, len);
+						//std::cout<<curStr<<std::endl;
+						HASH_INDEX_T res = 0;
+						for(size_t j = 0; j<curStr.size(); j++) 
+						{
+							res = (res * 36) + letterDigitToNumber(curStr[j]);
+						}
+						total += res*rValues[i];
+						//std::cout<<total<<std::endl;
+            if(idx<=0) break;
+        }
+        return total;
 
     }
 
@@ -28,7 +54,8 @@ struct MyStringHash {
     HASH_INDEX_T letterDigitToNumber(char letter) const
     {
         // Add code here or delete this helper function if you do not want it
-
+        if(isalpha(letter)) return tolower(letter) - 'a';
+        else return 26+ (letter-'0') ;
     }
 
     // Code to generate the random R values
@@ -47,3 +74,4 @@ struct MyStringHash {
 };
 
 #endif
+

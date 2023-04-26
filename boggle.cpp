@@ -78,6 +78,24 @@ std::pair<std::set<std::string>, std::set<std::string> > parseDict(std::string f
 std::set<std::string> boggle(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board)
 {
 	std::set<std::string> result;
+	/*
+	int indie = 0;
+	std::cout<<"dict"<<std::endl;
+	for(std::string s : dict) 
+	{
+		std::cout<<s<<std::endl;
+		indie++;
+		if(indie>10) break;
+	}
+	indie = 0;
+	std::cout<<"pref"<<std::endl;
+	for(std::string s : prefix) 
+	{
+		std::cout<<s<<std::endl;
+		indie++;
+		if(indie>10) break;
+	}
+	*/
 	for(unsigned int i=0;i<board.size();i++)
 	{
 		for(unsigned int j=0;j<board.size();j++)
@@ -94,6 +112,24 @@ std::set<std::string> boggle(const std::set<std::string>& dict, const std::set<s
 bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board, 
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
-//add your solution here!
+	word += board[r][c]; 
+	//std::cout<<word<<std::endl;
+	size_t m = board.size();
+	if(r+dr < m && c+dc <m)  
+	{
+		//check pref
+		std::string cur = word + board[r+dr][c+dc];
+		if(prefix.find(cur) != prefix.end()) 
+		{
+			if(boggleHelper(dict, prefix, board, word, result, r+dr, c+dc, dr, dc)) return true;
+		} 
+		word = cur;
+	}
+	if(word.size() > 1 && dict.find(word) != dict.end()) 
+			{
+				result.insert(word);
+				return true;
+			}
 
+	return false;
 }

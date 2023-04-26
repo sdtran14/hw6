@@ -23,6 +23,8 @@ int main()
         std::stringstream ss;
         ss << "hi" << i;
         ht.insert({ss.str(), i});
+				//cout << "size: " << ht.size() << endl;
+				//ht.reportAll(cout);
     }
     if( ht.find("hi1") != nullptr ){
         cout << "Found hi1" << endl;
